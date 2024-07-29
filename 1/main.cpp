@@ -2,15 +2,7 @@
 using namespace std;
 
 class CaesarCipher {
-	
-	public:
-		
-	int key;
-		
-	CaesarCipher(int key) {
-		this->key = key % 26;
-	}	
-	
+
 	void getStartAndEnd(int code, int &start, int &end) {
 	
 		if (code >= 65 && code <= 90) {
@@ -24,6 +16,14 @@ class CaesarCipher {
 		}
 	
 	}
+
+	public:
+		
+	int key;
+		
+	CaesarCipher(int key) {
+		this->key = key % 26;
+	}	
 	
 	string encrypt(string text) {
 		
