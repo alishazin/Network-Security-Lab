@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 using namespace std;
 
 class CaesarCipher {
@@ -78,10 +79,40 @@ int main() {
 	// 65 to 90
 	// 97 to 122
 	// 32 for space
-	    
-    CaesarCipher cc(4);
-    cout << cc.encrypt("Ali Shazin K") << endl;
-    cout << cc.decrypt(cc.encrypt("Ali Shazin K")) << endl;
+
+	int choice;
+	int key;
+
+	cout << "\nEnter key: ";
+	cin >> key;
+	CaesarCipher cc(key);
+
+	while (1) {
+		cout << "\n1. Encrypt" << endl;
+		cout << "2. Decrypt" << endl;
+		cout << "3. Exit" << endl;
+
+		cout << "Enter Choice: ";
+		cin >> choice;
+
+		string text;
+
+		if (choice == 1) {
+			cout << "\nEnter plaintext: ";
+			std::getline(std::cin >> std::ws, text);
+			cout << "Cipher: " << cc.encrypt(text) << endl;
+		} else if (choice == 2) {
+			cout << "\nEnter cipher: ";
+			std::getline(std::cin >> std::ws, text);
+			cout << "Plaintext: " << cc.decrypt(text) << endl;
+		} else if (choice == 3) {
+			cout << "Exiting.." << endl;
+			break;
+		} else {
+			cout << "Invalid Choice" << endl;
+		}
+	}
+
 
     return 0;
 }
