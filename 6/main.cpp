@@ -61,7 +61,10 @@ void leftShift(string &key, int count) {
 
 int main() {
 
-    string inputKey10 = "1010000010"; 
+    // 1010000010
+    string inputKey10;
+    cout << "Enter 10 bit input key : ";
+    cin >> inputKey10;
     
     inputKey10 = applyPermutation(inputKey10, P10, 10);
 
