@@ -48,7 +48,10 @@ string columnarTranspositionEncryption(string key, string plaintext) {
     for (int i=0; i<rowCount; i++) {
         for (int j=0; j<colCount; j++) {
 
-            matrix[i][j] = (char) plaintext[count];
+            if (count >= l) 
+                matrix[i][j] = ' ';
+            else
+                matrix[i][j] = (char) plaintext[count];
             count++;
 
         }
@@ -145,11 +148,11 @@ int main() {
 		if (choice == 1) {
 			cout << "\nEnter plaintext: ";
 			std::getline(std::cin >> std::ws, text);
-			cout << columnarTranspositionEncryption(key, text);
+			cout << "'" << columnarTranspositionEncryption(key, text) << "'";
 		} else if (choice == 2) {
 			cout << "\nEnter cipher: ";
 			std::getline(std::cin >> std::ws, text);
-			cout << columnarTranspositionDecryption(key, text);
+			cout << "'" << columnarTranspositionDecryption(key, text) << "'";
 		} else if (choice == 3) {
 			cout << "Exiting.." << endl;
 			break;
