@@ -3,14 +3,12 @@
 #include <cmath>
 using namespace std;
 
-int gcd(int a, int b) {
-		
+int gcd(int a, int b) {	
 	while (b != 0) {		
 		int temp = b;
 		b = a % b;
 		a = temp;
 	}
-	
 	return a;
 }
 
@@ -35,6 +33,7 @@ int isPrime(int n) {
     return is_prime;
 }
 
+// Given a number, it will find the next prime number
 int getNextPrime(int n) {
     while (1) {
         n = n+1;
@@ -44,6 +43,7 @@ int getNextPrime(int n) {
     }
 }
 
+// Generate an array consisting prime factors of a given number
 void primeFactorization(int num, vector<int> &factors) {
 
     int cur_prime = 2;
@@ -63,10 +63,11 @@ void primeFactorization(int num, vector<int> &factors) {
 }
 
 // Find the mod if the format is: x^y mod z
-int powerMod(int x, int y, int z) {
+int powerMod(long long x, int y, int z) {
 
     int hasAddition = 0;
     int initialX = x;
+
     vector<int> factorsY;
     primeFactorization(y, factorsY);
 
@@ -82,7 +83,6 @@ int powerMod(int x, int y, int z) {
 
         if (factorsY[i] > 5) {
             x = powerMod(x, factorsY[i], z);
-            // cout << "XX: " << x << endl;
         } else {
             x = pow(x, factorsY[i]);
         }
@@ -97,6 +97,19 @@ int powerMod(int x, int y, int z) {
     }
 
     return x % z;
+
+}
+
+void printVector(vector<int> vec, int as_char) {
+
+    for (int i=0; i<vec.size(); i++) {
+        if (as_char) {
+            cout << (char) vec[i];
+        } else {
+            cout << vec[i] << " ";
+        }
+    }
+    cout << endl;
 
 }
 
@@ -132,23 +145,32 @@ class RSA {
                 break;
             }
         }
+                
+        cout << "p: " << this->p << endl;
+        cout << "q: " << this->q << endl;
+        cout << "n: " << this->n << endl;
+        cout << "phi: " << this->phi << endl;
+        cout << "e: " << this->e << endl;
+        cout << "d: " << this->d << endl << endl;
 
     }
 
-    void encrypt(string plaintext, long long cipher[]) {
+    void encrypt(string plaintext, vector<int> &cipher) {
 
         int l = plaintext.length();
 
         for (int i=0; i<l; i++) {
-            cipher[i] = powerMod(plaintext[i], this->e, this->n);
+            cipher.push_back(powerMod(plaintext[i], this->e, this->n));
         }
 
     }
 
-    void decrypt(long long *cipher, long long plaintext[], int l) {
+    void decrypt(vector<int> cipher, vector<int> &plaintext) {
+
+        int l = cipher.size();
 
         for (int i=0; i<l; i++) {
-            plaintext[i] = powerMod(cipher[i], this->d, this->n);
+            plaintext.push_back(powerMod(cipher[i], this->d, this->n));
         }
 
     }
@@ -157,34 +179,25 @@ class RSA {
 
 int main() {
 
-    RSA rsa(11, 13);
-    string a = "ALISHAZIN";
-    int l = a.length();
-    long long cipher[l];
+    RSA rsa(17, 19);
 
-    for (int i=0; i<l; i++) {
-        cout << a[i];
-    }
-    cout << endl;
+    string text = "shazin 1029";
+    cout << "Text: " << text << endl << endl;
 
-    rsa.encrypt(a, cipher);
-    
+    vector<int> cipher;
+    rsa.encrypt(text, cipher);
+
     cout << "Cipher: " << endl;
-    for (int i=0; i<l; i++) {
-        cout << (char) cipher[i];
-    }
+    // printVector(cipher, 1);
+    printVector(cipher, 0);
     cout << endl;
+        
+    vector<int> plaintext;
+    rsa.decrypt(cipher, plaintext);
 
-    long long plaintext[l];
-
-    rsa.decrypt(cipher, plaintext, l);
-
-    for (int i=0; i<l; i++) {
-        cout << (char) plaintext[i];
-    }
-    cout << endl;
-
-    // cout << powerMod(65,103,143) << endl;
+    cout << "Plaintext: " << endl;
+    printVector(plaintext, 1);
+    printVector(plaintext, 0);
 
     return 0;
 }
