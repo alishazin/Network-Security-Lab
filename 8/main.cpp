@@ -1,11 +1,19 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <random>
 using namespace std;
 
-int gcd(int a, int b) {	
+// int willMultiplicationOverflow(unsigned long long a, unsigned long long b){
+//     if (a == 0 || b == 0) {
+//         return 0;
+//     }
+//     return a > numeric_limits<unsigned long long>::max() / b;
+// }
+
+long gcd(long long a, long long b) {	
 	while (b != 0) {		
-		int temp = b;
+		long long temp = b;
 		b = a % b;
 		a = temp;
 	}
@@ -81,10 +89,12 @@ int powerMod(long long x, int y, int z) {
 
     while (i < factorsY.size()) {
 
-        if (factorsY[i] > 5) {
+        if (factorsY[i] > 2) {
             x = powerMod(x, factorsY[i], z);
+            // cout << "xPM: " << x << endl;
         } else {
             x = pow(x, factorsY[i]);
+            // cout << "xP: " << x << endl;
         }
         if (x >= z) {
             x = x % z;
@@ -93,7 +103,9 @@ int powerMod(long long x, int y, int z) {
     }
 
     if (hasAddition) {
+        // cout << "xI-: " << x << endl;
         x = x * initialX;
+        // cout << "xI+: " << x << endl;
     }
 
     return x % z;
@@ -117,7 +129,8 @@ class RSA {
 
     public:
 
-    int p, q, n, phi, e, d;
+    int p, q;
+    long long n, phi, e, d;
 
     RSA(int p, int q) {
         this->p = p;
@@ -130,16 +143,25 @@ class RSA {
         this->n = this->p * this->q;
         this->phi = (this->p - 1) * (this->q - 1);
 
-        // Finding e value (brute force method)
-        for (int i=2; i<this->phi; i++) {
+        vector<int> e_list;
+
+        // Finding all possible e value (brute force method)
+        for (long long i=2; i<this->phi; i++) {
             if (gcd(this->phi, i) == 1) {
                 this->e = i;
-                break;
+                e_list.push_back(i);
             }
         }
 
+        std::random_device rd; // obtain a random number from hardware
+        std::mt19937 gen(rd()); // seed the generator
+        std::uniform_int_distribution<> distr(0, e_list.size()-1); // define the range
+
+        // Choosing a e value from the list
+        this->e = e_list[distr(gen)];
+
         // Finding d value
-        for (int i=1; i<INT_MAX; i++) {
+        for (long long i=1; i<INT_MAX; i++) {
             if ((i * this->e) % this->phi == 1) {
                 this->d = i;
                 break;
@@ -179,10 +201,14 @@ class RSA {
 
 int main() {
 
-    RSA rsa(17, 19);
+    RSA rsa(997, 991);
 
-    string text = "shazin 1029";
-    cout << "Text: " << text << endl << endl;
+    string text = "Shazin 1029";
+    cout << "Text: " << text << endl;
+    for (int i=0; i<text.length(); i++) {
+        cout << (int) text[i] << " ";
+    }
+    cout << endl << endl;
 
     vector<int> cipher;
     rsa.encrypt(text, cipher);
