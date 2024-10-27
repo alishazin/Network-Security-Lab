@@ -13,96 +13,18 @@ long gcd(long long a, long long b) {
 	return a;
 }
 
-int isPrime(int n) {
+long int powerMod(int a, int b, int mod) {
+    
+    long long int t;
+    if(b==1)
+        return a;
 
-    int is_prime = 1;
-    int i;
+    t = powerMod(a,b/2,mod);
 
-    // 0 and 1 are not prime numbers
-    if (n == 0 || n == 1) {
-        is_prime = 1;
-    }
-
-    // loop to check if n is prime
-    for (i = 2; i <= n/2; ++i) {
-        if (n % i == 0) {
-            is_prime = 0;
-            break;
-        }
-    }
-
-    return is_prime;
-}
-
-// Given a number, it will find the next prime number
-int getNextPrime(int n) {
-    while (1) {
-        n = n+1;
-        if (isPrime(n)) {
-            return n;
-        }
-    }
-}
-
-// Generate an array consisting prime factors of a given number
-void primeFactorization(int num, vector<int> &factors) {
-
-    int cur_prime = 2;
-
-    while (num != 1) {
-
-        while (num % cur_prime != 0) {
-            cur_prime = getNextPrime(cur_prime);
-        }
-
-        num = num / cur_prime;
-        factors.push_back(cur_prime);
-        cur_prime = 2;
-
-    }
-
-}
-
-// Find the mod if the format is: x^y mod z
-int powerMod(long long x, int y, int z) {
-
-    int hasAddition = 0;
-    int initialX = x;
-
-    vector<int> factorsY;
-    primeFactorization(y, factorsY);
-
-    if (factorsY.size() == 1) {
-        hasAddition = 1;
-        factorsY.clear();
-        primeFactorization(y-1, factorsY);
-    }
-
-    int i=0;
-
-    while (i < factorsY.size()) {
-
-        if (factorsY[i] > 2) {
-            x = powerMod(x, factorsY[i], z);
-            // cout << "xPM: " << x << endl;
-        } else {
-            x = pow(x, factorsY[i]);
-            // cout << "xP: " << x << endl;
-        }
-        if (x >= z) {
-            x = x % z;
-        }
-        i++;
-    }
-
-    if (hasAddition) {
-        // cout << "xI-: " << x << endl;
-        x = x * initialX;
-        // cout << "xI+: " << x << endl;
-    }
-
-    return x % z;
-
+    if(b%2==0)
+        return (t*t)%mod;
+    else
+        return (((t*t)%mod)*a)%mod;
 }
 
 void printVector(vector<int> vec, int as_char) {
@@ -194,7 +116,7 @@ class RSA {
 
 int main() {
 
-    RSA rsa(379, 449);
+    RSA rsa(991, 997);
 
     string text = "Shazin 1029";
     cout << "Text: " << text << endl;
