@@ -147,10 +147,12 @@ int main() {
 
 		if (choice == 1) {
 			cout << "\nEnter plaintext: ";
+            // cin >> text;
 			std::getline(std::cin >> std::ws, text);
 			cout << "'" << columnarTranspositionEncryption(key, text) << "'";
 		} else if (choice == 2) {
 			cout << "\nEnter cipher: ";
+            // cin >> text;
 			std::getline(std::cin >> std::ws, text);
 			cout << "'" << columnarTranspositionDecryption(key, text) << "'";
 		} else if (choice == 3) {
